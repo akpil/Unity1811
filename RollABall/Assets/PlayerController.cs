@@ -22,6 +22,6 @@ public class PlayerController : MonoBehaviour {
         {
             gameObject.SetActive(false);
         }
-        //rb.AddForce(new Vector3(hori, 0, vert) * Speed);
+        rb.velocity = new Vector3(hori, 0, vert) * Speed;
 	}
 }

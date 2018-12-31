@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public Bolt playerBoltPrefab;
+    public Transform firePosition;
+    public float ReloadTime;
+    private float currentReloadTime;
+
     private Rigidbody rb;
     public float Speed;
 
@@ -15,7 +20,9 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
-	}
+        currentReloadTime = 0;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,5 +37,16 @@ public class PlayerController : MonoBehaviour {
                                   0,
                                   Mathf.Clamp(rb.position.z, zMin, zMax));
 
+
+        if(Input.GetButton("Fire1"))
+        {
+            if (currentReloadTime <= 0)
+            {
+                Bolt newBolt = Instantiate(playerBoltPrefab);
+                newBolt.transform.position = firePosition.position;
+                currentReloadTime = ReloadTime;
+            }            
+        }
+        currentReloadTime -= Time.deltaTime;
 	}
 }

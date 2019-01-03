@@ -49,4 +49,14 @@ public class PlayerController : MonoBehaviour {
         }
         currentReloadTime -= Time.deltaTime;
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("EnemyBolt"))
+        {
+            // game over
+            Debug.Log("Game Over");
+            gameObject.SetActive(false);
+        }
+    }
 }

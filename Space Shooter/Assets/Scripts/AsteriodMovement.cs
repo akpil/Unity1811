@@ -31,6 +31,7 @@ public class AsteriodMovement : MonoBehaviour {
             }
             // add score
             Debug.Log("Add Score");
+            other.gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }

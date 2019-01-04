@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public Bolt playerBoltPrefab;
+    public BoltPool playerBoltPool;
     public Transform firePosition;
     public float ReloadTime;
     private float currentReloadTime;
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (currentReloadTime <= 0)
             {
-                Bolt newBolt = Instantiate(playerBoltPrefab);
+                Bolt newBolt = playerBoltPool.GetFromPool();
                 newBolt.transform.position = firePosition.position;
                 currentReloadTime = ReloadTime;
             }            
@@ -54,9 +54,14 @@ public class PlayerController : MonoBehaviour {
     {
         if(other.gameObject.CompareTag("EnemyBolt"))
         {
-            // game over
-            Debug.Log("Game Over");
             gameObject.SetActive(false);
         }
+    }
+    private void OnDisable()
+    {
+        GameObject effect =
+                EffectPool.instance.GetFromPool((int)eEffectType.Player);
+        effect.transform.position = transform.position;
+        GameController.instance.GameOver();
     }
 }

@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour {
 
     private Rigidbody rb;
     public float Speed;
-    public Bolt boltPrefab;
+    public BoltPool boltPool;
     public Transform boltFirePos;
 	// Use this for initialization
 	void Awake () {
@@ -18,6 +18,11 @@ public class EnemyController : MonoBehaviour {
         StartCoroutine(autoFire());
         StartCoroutine(Evaid());
         rb.velocity = Vector3.back * Speed;
+    }
+
+    public void SetBoltPool(BoltPool p)
+    {
+        boltPool = p;
     }
 
     private IEnumerator Evaid()
@@ -59,9 +64,13 @@ public class EnemyController : MonoBehaviour {
     private IEnumerator autoFire()
     {
         yield return new WaitForSeconds(Random.Range(.8f, 1.2f));
-        Bolt newBolt = Instantiate(boltPrefab);
-        newBolt.transform.position = boltFirePos.position;
-        //newBolt.transform.rotation = boltFirePos.rotation;
+        if (boltPool != null)
+        {
+            Bolt newBolt = boltPool.GetFromPool();
+            newBolt.transform.position = boltFirePos.position;
+            //newBolt.transform.rotation = boltFirePos.rotation;
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,15 +78,12 @@ public class EnemyController : MonoBehaviour {
         if (other.gameObject.CompareTag("PlayerBolt") ||
             other.gameObject.CompareTag("Player"))
         {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                // game over
-                Debug.Log("Game Over");
-            }
-            // add score
-            Debug.Log("Add Score");
+            GameController.instance.AddScore(1);
             other.gameObject.SetActive(false);
-            Destroy(gameObject);
+            GameObject effect =
+                EffectPool.instance.GetFromPool((int)eEffectType.Enemy);
+            effect.transform.position = transform.position;
+            gameObject.SetActive(false);
         }
     }
 

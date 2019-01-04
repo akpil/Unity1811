@@ -3,21 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
+    public static GameController instance;
 
-    public AsteriodMovement[] AsteriodPrefab;
-    public EnemyController enemyPrefab;
+    public AsteroidPool asteriodPool;
+    public EnemyPool enemyPool;
 
     private const float RELOAD_TIME = 5;
     private float currentReloadTime;
 
     private Coroutine routine;
+    private int score;
 
-	// Use this for initialization
-	void Start () {
-        currentReloadTime = 0;
-        StartCoroutine(SpawnRoutine());
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
+    // Use this for initialization
+    void Start () {
+        currentReloadTime = 0;
+        score = 0;
+        routine = StartCoroutine(SpawnRoutine());
+    }
 
     private IEnumerator SpawnRoutine()
     {
@@ -27,19 +41,32 @@ public class GameController : MonoBehaviour {
         {
             for (int i = 0; i < 5; i++)
             {
-                AsteriodMovement newAst = Instantiate(AsteriodPrefab[Random.Range(0, AsteriodPrefab.Length)]);
+                AsteriodMovement newAst = asteriodPool.GetFromPool();
                 newAst.transform.position = new Vector3(Random.Range(-5f, 5f), 0, 16);
                 yield return pointThree;
 
             }
             for (int i = 0; i < 2; i++)
             {
-                EnemyController newEnemy = Instantiate(enemyPrefab);
+                EnemyController newEnemy = enemyPool.GetFromPool();
                 newEnemy.transform.position = new Vector3(Random.Range(-5f, 5f), 0, 16);
                 yield return pointThree;
             }
             yield return reloadTime;
         }
+    }
+
+    public void AddScore(int amount)
+    {
+        score += amount;
+        // Print socre at UI
+        Debug.LogFormat("Score : {0}", score.ToString());
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over...");
+        StopCoroutine(routine);
     }
 
 	// Update is called once per frame

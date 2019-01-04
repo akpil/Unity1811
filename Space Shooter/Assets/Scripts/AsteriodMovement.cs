@@ -24,15 +24,12 @@ public class AsteriodMovement : MonoBehaviour {
         if (other.gameObject.CompareTag("PlayerBolt") || 
             other.gameObject.CompareTag("Player"))
         {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                // game over
-                Debug.Log("Game Over");
-            }
-            // add score
-            Debug.Log("Add Score");
+            GameController.instance.AddScore(1);
             other.gameObject.SetActive(false);
-            Destroy(gameObject);
+            GameObject effect = 
+                EffectPool.instance.GetFromPool((int)eEffectType.Asteroid);
+            effect.transform.position = transform.position;
+            gameObject.SetActive(false);
         }
     }
 

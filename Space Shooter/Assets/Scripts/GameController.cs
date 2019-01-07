@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
     public static GameController instance;
+    public UIController uIController;
 
     public AsteroidPool asteriodPool;
     public EnemyPool enemyPool;
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour {
         currentReloadTime = 0;
         score = 0;
         routine = StartCoroutine(SpawnRoutine());
+        SoundController.instance.PlayeBGM(eBGMClips.BG01);
     }
 
     private IEnumerator SpawnRoutine()
@@ -60,12 +62,12 @@ public class GameController : MonoBehaviour {
     {
         score += amount;
         // Print socre at UI
-        Debug.LogFormat("Score : {0}", score.ToString());
+        uIController.ShowScore(score);
     }
 
     public void GameOver()
     {
-        Debug.Log("Game Over...");
+        uIController.ShowGameStatus("Game Over");
         StopCoroutine(routine);
     }
 

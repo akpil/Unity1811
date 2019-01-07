@@ -29,6 +29,7 @@ public class AsteriodMovement : MonoBehaviour {
             GameObject effect = 
                 EffectPool.instance.GetFromPool((int)eEffectType.Asteroid);
             effect.transform.position = transform.position;
+            SoundController.instance.PlayerEffectSound(eEffectClips.ExpAsteroid);
             gameObject.SetActive(false);
         }
     }

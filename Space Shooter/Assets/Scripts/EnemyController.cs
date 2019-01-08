@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour {
     public float Speed;
     public BoltPool boltPool;
     public Transform boltFirePos;
+    private PlayerController player;
 	// Use this for initialization
 	void Awake () {
         rb = GetComponent<Rigidbody>();
@@ -80,11 +81,22 @@ public class EnemyController : MonoBehaviour {
             other.gameObject.CompareTag("Player"))
         {
             GameController.instance.AddScore(1);
-            other.gameObject.SetActive(false);
             GameObject effect =
                 EffectPool.instance.GetFromPool((int)eEffectType.Enemy);
             effect.transform.position = transform.position;
             SoundController.instance.PlayerEffectSound(eEffectClips.ExpEnemy);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (player == null)
+                {
+                    player = other.gameObject.GetComponent<PlayerController>();
+                }
+                player.Hit(1);
+            }
+            else
+            {
+                other.gameObject.SetActive(false);
+            }
             gameObject.SetActive(false);
         }
     }

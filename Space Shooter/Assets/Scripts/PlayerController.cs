@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-
+    public UIController uIController;
     public BoltPool playerBoltPool;
     public Transform firePosition;
     public float ReloadTime;
@@ -17,15 +17,22 @@ public class PlayerController : MonoBehaviour {
     public float xMax, xMin;
     public float zMax, zMin;
 
+    public int MaxHP;
+    private int currentHP;
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         currentReloadTime = 0;
-
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void OnEnable()
+    {
+        currentHP = MaxHP;
+        uIController.ShowHP(1);
+    }
+
+    // Update is called once per frame
+    void Update () {
         float Hori = Input.GetAxis("Horizontal");
         float Vert = Input.GetAxis("Vertical");
 
@@ -55,7 +62,7 @@ public class PlayerController : MonoBehaviour {
     {
         if(other.gameObject.CompareTag("EnemyBolt"))
         {
-            gameObject.SetActive(false);
+            Hit(1);
         }
     }
     private void OnDisable()
@@ -66,4 +73,14 @@ public class PlayerController : MonoBehaviour {
         GameController.instance.GameOver();
         SoundController.instance.PlayerEffectSound(eEffectClips.ExpPlayer);
     }
+    public void Hit(int a)
+    {
+        currentHP--;
+        Debug.Log(currentHP);
+        if (currentHP <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+        uIController.ShowHP((float)currentHP / MaxHP);
+    }   
 }

@@ -7,6 +7,7 @@ public class AsteriodMovement : MonoBehaviour {
     public float AngularSpeed;
     public float Speed;
     private Rigidbody rb;
+    private PlayerController player;
 
     private void Awake()
     {
@@ -25,11 +26,23 @@ public class AsteriodMovement : MonoBehaviour {
             other.gameObject.CompareTag("Player"))
         {
             GameController.instance.AddScore(1);
-            other.gameObject.SetActive(false);
+            
             GameObject effect = 
                 EffectPool.instance.GetFromPool((int)eEffectType.Asteroid);
             effect.transform.position = transform.position;
             SoundController.instance.PlayerEffectSound(eEffectClips.ExpAsteroid);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (player == null)
+                {
+                    player = other.gameObject.GetComponent<PlayerController>();
+                }
+                player.Hit(1);
+            }
+            else
+            {
+                other.gameObject.SetActive(false);
+            }
             gameObject.SetActive(false);
         }
     }

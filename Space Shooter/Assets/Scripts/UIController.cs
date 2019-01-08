@@ -6,11 +6,20 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour {
 
     public Text ScoreText, GameStatusText;
-
+    public Button RestartButton;
+    public Image HPBar;
+    int id;
 	// Use this for initialization
 	void Start () {
         ScoreText.text = "Score : 0";
         GameStatusText.text = "";
+        //RestartButton.onClick.AddListener(GameController.instance.Restart);
+        
+    }
+
+    public void ShowHP(float amount)
+    {
+        HPBar.fillAmount = amount;
     }
 
     public void ShowScore(int value)

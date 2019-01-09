@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     public UIController uIController;
+
     public BoltPool playerBoltPool;
     public Transform firePosition;
     public float ReloadTime;
     private float currentReloadTime;
+    private int boltIndex;
 
     private Rigidbody rb;
     public float Speed;
@@ -19,10 +21,12 @@ public class PlayerController : MonoBehaviour {
 
     public int MaxHP;
     private int currentHP;
+    
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         currentReloadTime = 0;
+        boltIndex = 0;
     }
 
     private void OnEnable()
@@ -49,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (currentReloadTime <= 0)
             {
-                Bolt newBolt = playerBoltPool.GetFromPool();
+                Bolt newBolt = playerBoltPool.GetFromPool(boltIndex);
                 newBolt.transform.position = firePosition.position;
                 SoundController.instance.PlayerEffectSound(eEffectClips.WeaponPlayer);
                 currentReloadTime = ReloadTime;
@@ -82,5 +86,24 @@ public class PlayerController : MonoBehaviour {
             gameObject.SetActive(false);
         }
         uIController.ShowHP((float)currentHP / MaxHP);
-    }   
+    }
+    public void GetItem(eItemType type)
+    {
+        switch (type)
+        {
+            case eItemType.powerUP:
+                boltIndex = 1;
+                break;
+            case eItemType.Life:
+                if (currentHP < MaxHP)
+                {
+                    currentHP++;
+                    uIController.ShowHP((float)currentHP / MaxHP);
+                }
+                break;
+            default:
+                Debug.Log("wrong item type");
+                break;
+        }
+    }
 }

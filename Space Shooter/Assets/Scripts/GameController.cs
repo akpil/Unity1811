@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 
     public AsteroidPool asteriodPool;
     public EnemyPool enemyPool;
+    public ItemPool itemPool;
     public BGScroller[] BGs;
 
     private const float RELOAD_TIME = 5;
@@ -87,8 +88,14 @@ public class GameController : MonoBehaviour {
                 asteroidCount--;
                 yield return pointThree;
             }
-            
-            yield return reloadTime;
+            if (asteroidCount == 0 && enemyCount == 0)
+            {
+                ItemMovement newItem = itemPool.GetFromPool(Random.Range(0, 2));
+                newItem.transform.position = new Vector3(Random.Range(-5f, 5f), 0, 16);
+                enemyCount = 2;
+                asteroidCount = 5;
+                yield return reloadTime;
+            }
         }
     }
 

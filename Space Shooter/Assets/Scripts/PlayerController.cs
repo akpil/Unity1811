@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     public UIController uIController;
 
+    public Bomb bomb;
+
     public BoltPool playerBoltPool;
     public Transform firePosition;
     public float ReloadTime;
@@ -60,6 +62,11 @@ public class PlayerController : MonoBehaviour {
             }            
         }
         currentReloadTime -= Time.deltaTime;
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            bomb.gameObject.SetActive(true);
+        }
 	}
 
     private void OnTriggerEnter(Collider other)

@@ -8,6 +8,8 @@ public class UIController : MonoBehaviour {
     public Text ScoreText, GameStatusText;
     public Button RestartButton;
     public Image HPBar;
+    public GameObject BossHPBorder;
+    public Image BossHPBar;
     int id;
 	// Use this for initialization
 	void Start () {
@@ -20,6 +22,16 @@ public class UIController : MonoBehaviour {
     public void ShowHP(float amount)
     {
         HPBar.fillAmount = amount;
+    }
+
+    public void ShowBossHP(float amount)
+    {
+        BossHPBorder.SetActive(true);
+        BossHPBar.fillAmount = amount;
+    }
+    public void HideBossHP()
+    {
+        BossHPBorder.SetActive(false);
     }
 
     public void ShowScore(int value)

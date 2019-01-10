@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour {
     private const float RELOAD_TIME = 5;
     private float currentReloadTime;
 
+    public GameObject Boss;
+    private int phaseCount;
+    private bool isBossPhase;
     private Coroutine routine;
     private int score;
 
@@ -37,6 +40,7 @@ public class GameController : MonoBehaviour {
     void Start () {
         currentReloadTime = 0;
         score = 0;
+        phaseCount = 0;
         routine = StartCoroutine(SpawnRoutine());
         SoundController.instance.PlayeBGM(eBGMClips.BG01);
         playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -46,6 +50,20 @@ public class GameController : MonoBehaviour {
         //{
         //    BGs[i] = BGObj[i].GetComponent<BGScroller>();
         //}
+    }
+
+    public void ShowBossHP(float hp)
+    {
+        uIController.ShowBossHP(hp);
+    }
+    public void HideBossHP()
+    {
+        uIController.HideBossHP();
+    }
+
+    public void BossDead()
+    {
+        isBossPhase = false;
     }
 
     private IEnumerator SpawnRoutine()
@@ -95,6 +113,18 @@ public class GameController : MonoBehaviour {
                 enemyCount = 2;
                 asteroidCount = 5;
                 yield return reloadTime;
+            }
+
+            phaseCount++;
+            if (phaseCount >= 5)
+            {
+                phaseCount = 0;
+                isBossPhase = true;
+                Boss.SetActive(true);
+                while (isBossPhase)
+                {
+                    yield return reloadTime;
+                }
             }
         }
     }

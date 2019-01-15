@@ -10,24 +10,33 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
         anim = GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
+
+    public void Hit(float amount)
+    {
+        Debug.Log("Hit by " + amount.ToString());
+    }
+
+    // Update is called once per frame
+    void Update () {
+        float Horizontal = Input.GetAxis("Horizontal");
+
+        if (Horizontal < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             anim.SetBool(AnimationHashList.isAttackHash, true);
         }
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            anim.SetBool(AnimationHashList.isAttackHash, false);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            anim.SetBool(AnimationHashList.isDeadHash, true);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            anim.SetBool(AnimationHashList.isDeadHash, false);
-        }
+    }
+
+    public void AttackTarget(GameObject traget)
+    {
+        traget.SendMessage("Hit", 1);
     }
 }

@@ -6,6 +6,8 @@ public class EnemeyController : MonoBehaviour {
     private Animator anim;
     private Rigidbody2D rb2D;
     private float speed;
+    private PlayerController player;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -34,11 +36,19 @@ public class EnemeyController : MonoBehaviour {
         anim.SetBool(AnimationHashList.isAttackHash, false);
         
     }
-
+    public void Hit(float amount)
+    {
+        Debug.Log("Enemy Hit by " + amount.ToString());
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (player == null)
+            {
+                player = collision.gameObject.GetComponent<PlayerController>();
+            }
+            player.Hit(1);
             Debug.Log("Find player");
             anim.SetBool(AnimationHashList.isWalkHash, false);
             anim.SetBool(AnimationHashList.isAttackHash, true);

@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114771855318911172}
   m_Layer: 8
   m_Name: FemaleZombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d526ed9002de9479730d1d06da9552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1.5
+  MaxHP: 1.5
 --- !u!212 &212673966636962016
 SpriteRenderer:
   m_ObjectHideFlags: 1

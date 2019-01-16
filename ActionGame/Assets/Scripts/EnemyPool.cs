@@ -6,10 +6,10 @@ public class EnemyPool : MonoBehaviour {
     public static EnemyPool instance;
 
     [SerializeField]
-    private EnemeyController[] enemyPrefab;
+    private EnemyController[] enemyPrefab;
     [SerializeField]
-    private EnemeyController a;
-    private List<EnemeyController>[] pool;
+    private EnemyController a;
+    private List<EnemyController>[] pool;
 
     private void Awake()
     {
@@ -18,12 +18,12 @@ public class EnemyPool : MonoBehaviour {
             instance = this;
 
             // 폴더에서 로드
-            enemyPrefab = Resources.LoadAll<EnemeyController>("Prefab/Enemy");
-            a = Resources.Load<EnemeyController>("Prefab/Enemy/MaleZombie");
-            pool = new List<EnemeyController>[enemyPrefab.Length];
+            enemyPrefab = Resources.LoadAll<EnemyController>("Prefab/Enemy");
+            a = Resources.Load<EnemyController>("Prefab/Enemy/MaleZombie");
+            pool = new List<EnemyController>[enemyPrefab.Length];
             for (int i = 0; i < pool.Length; i++)
             {
-                pool[i] = new List<EnemeyController>();
+                pool[i] = new List<EnemyController>();
             }
 
         }
@@ -33,12 +33,17 @@ public class EnemyPool : MonoBehaviour {
         }
     }
 
+    public int GetIndexCount()
+    {
+        return enemyPrefab.Length;
+    }
+
     // Use this for initialization
     void Start () {
 		
 	}
 
-    public EnemeyController GetFromPool(int index)
+    public EnemyController GetFromPool(int index)
     {
         for (int i = 0; i < pool[index].Count; i++)
         {
@@ -48,7 +53,7 @@ public class EnemyPool : MonoBehaviour {
                 return pool[index][i];
             }
         }
-        EnemeyController newObj = Instantiate(enemyPrefab[index]);
+        EnemyController newObj = Instantiate(enemyPrefab[index]);
         pool[index].Add(newObj);
         return newObj;
     }

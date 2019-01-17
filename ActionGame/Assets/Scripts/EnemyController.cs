@@ -8,6 +8,11 @@ public enum eEnemyState
 }
 
 public class EnemyController : MonoBehaviour {
+
+    [SerializeField]
+    private Transform hpBarPos;
+    private HPBar bar;
+
     private Animator anim;
     private Rigidbody2D rb2D;
     [SerializeField]
@@ -31,10 +36,15 @@ public class EnemyController : MonoBehaviour {
         stateStep = 3;
         state = eEnemyState.Idle;
         currentHP = MaxHP;
+
         anim.SetBool(AnimationHashList.isWalkHash, false);
         anim.SetBool(AnimationHashList.isDeadHash, false);
         anim.SetBool(AnimationHashList.isAttackHash, false);
         StartCoroutine(EnemyState());
+
+        bar = HPBarPool.instance.GetFromPool();
+        bar.transform.position = hpBarPos.position;
+        bar.ShowHP(currentHP / MaxHP);
     }
 
     private IEnumerator EnemyState()
@@ -91,8 +101,11 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (bar != null)
+        {
+            bar.transform.position = hpBarPos.position;
+        }
+    }
 
     public void FinishAttack()
     {
@@ -104,10 +117,16 @@ public class EnemyController : MonoBehaviour {
     {
         currentHP -= amount;
         Debug.Log("Enemy HP :" + currentHP.ToString());
-        if (currentHP <= 0)
+        if (bar != null)
         {
-            state = eEnemyState.Dead;
-            anim.SetBool(AnimationHashList.isDeadHash, true);
+            bar.ShowHP(currentHP / MaxHP);
+            if (currentHP <= 0)
+            {
+                bar.gameObject.SetActive(false);
+                bar = null;
+                state = eEnemyState.Dead;
+                anim.SetBool(AnimationHashList.isDeadHash, true);
+            }
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 654553072}
-  barPrefab: {fileID: 114990841109639326, guid: 8eab4e18b097c9544bb4e3380a60fee2,
+  barPrefab: {fileID: 114722002575012572, guid: f8b5f2bb9330c334f827a04249f5e876,
     type: 2}
 --- !u!1 &240433958
 GameObject:

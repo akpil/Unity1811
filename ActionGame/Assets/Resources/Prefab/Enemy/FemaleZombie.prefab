@@ -179,6 +179,7 @@ MonoBehaviour:
   hpBarPos: {fileID: 4615579621656872}
   speed: 1.5
   MaxHP: 1.5
+  incomeWeight: 1.5
 --- !u!212 &212673966636962016
 SpriteRenderer:
   m_ObjectHideFlags: 1

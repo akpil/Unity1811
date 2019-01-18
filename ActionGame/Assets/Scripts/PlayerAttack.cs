@@ -10,7 +10,6 @@ public class PlayerAttack : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("%%%%");
             player.AttackTarget(collision.gameObject);
         }
     }

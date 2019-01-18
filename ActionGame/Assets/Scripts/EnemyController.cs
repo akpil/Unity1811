@@ -11,7 +11,6 @@ public class EnemyController : MonoBehaviour {
 
     [SerializeField]
     private Transform hpBarPos;
-    private HPBar bar;
 
     private Animator anim;
     private Rigidbody2D rb2D;
@@ -25,26 +24,28 @@ public class EnemyController : MonoBehaviour {
     private int stateStep;
     private eEnemyState state;
 
+    private float incomeAmount;
+    [SerializeField]
+    private float incomeWeight = 1;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
     }
 
-    public void StartMove()
+    public void StartMove(float inputIncome)
     {
         stateStep = 3;
         state = eEnemyState.Idle;
         currentHP = MaxHP;
 
+        incomeAmount = inputIncome * incomeWeight;
+
         anim.SetBool(AnimationHashList.isWalkHash, false);
         anim.SetBool(AnimationHashList.isDeadHash, false);
         anim.SetBool(AnimationHashList.isAttackHash, false);
         StartCoroutine(EnemyState());
-
-        bar = HPBarPool.instance.GetFromPool();
-        bar.transform.position = hpBarPos.position;
-        bar.ShowHP(currentHP / MaxHP);
     }
 
     private IEnumerator EnemyState()
@@ -101,10 +102,6 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (bar != null)
-        {
-            bar.transform.position = hpBarPos.position;
-        }
     }
 
     public void FinishAttack()
@@ -116,16 +113,19 @@ public class EnemyController : MonoBehaviour {
     public void Hit(float amount)
     {
         currentHP -= amount;
-        Debug.Log("Enemy HP :" + currentHP.ToString());
-        if (bar != null)
+
+        if (!anim.GetBool(AnimationHashList.isDeadHash))
         {
+            HPBar bar = HPBarPool.instance.GetFromPool();
+            bar.transform.position = hpBarPos.position;
             bar.ShowHP(currentHP / MaxHP);
             if (currentHP <= 0)
             {
-                bar.gameObject.SetActive(false);
-                bar = null;
+                bar.ShowIncome(incomeAmount);
                 state = eEnemyState.Dead;
                 anim.SetBool(AnimationHashList.isDeadHash, true);
+
+                GameController.instance.AddMoney(incomeAmount);
             }
         }
     }

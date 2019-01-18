@@ -3,15 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
+    public static GameController instance;
 
     [SerializeField]
     private Transform LSP, RSP;
     private int enemyIndexLength;
-	// Use this for initialization
-	void Start () {
+
+    private float money;
+    [SerializeField]
+    private float income, incomeWeight;
+    [SerializeField]
+    private int increaseIncomeRate;
+    private int spawnCount;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
         enemyIndexLength = EnemyPool.instance.GetIndexCount();
         StartCoroutine(Spawn());
-	}
+        money = 0;
+        spawnCount = 0;
+        UIController.instance.ShowMoney(money);
+    }
+
+    public void AddMoney(float amount)
+    {
+        money += amount;
+        UIController.instance.ShowMoney(money);
+    }
 
     private IEnumerator Spawn()
     {
@@ -31,7 +61,8 @@ public class GameController : MonoBehaviour {
                 newEnemy.transform.rotation = Quaternion.Euler(0, 180, 0);
                 newEnemy.transform.position = RSP.position;
             }
-            newEnemy.StartMove();
+            newEnemy.StartMove(income + incomeWeight * (spawnCount/increaseIncomeRate));
+            spawnCount++;
             yield return Gap;
         }
     }

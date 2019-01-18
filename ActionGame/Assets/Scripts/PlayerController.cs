@@ -6,14 +6,18 @@ public class PlayerController : MonoBehaviour {
 
     private Animator anim;
 
+    private int HP;
+
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
+        HP = 5;
     }
 
-    public void Hit(float amount)
+    public void Hit(int amount)
     {
-        Debug.Log("Hit by " + amount.ToString());
+        HP -= amount;
+        UIController.instance.SubHP(amount);
     }
 
     // Update is called once per frame

@@ -7,7 +7,9 @@ public class UIController : MonoBehaviour {
     public static UIController instance;
 
     [SerializeField]
-    private Text moneyText;
+    private Text moneyText, incomeText;
+    [SerializeField]
+    private GameObject resultWindow;
 
     [SerializeField]
     private Image[] HP;
@@ -30,6 +32,26 @@ public class UIController : MonoBehaviour {
         moneyText.text = money.ToString("F1");
     }
 
+    public void ShowResultWindow(float income)
+    {
+        resultWindow.SetActive(true);
+        StartCoroutine(ShowIncomeResult(income));
+    }
+
+    private IEnumerator ShowIncomeResult(float money)
+    {
+        WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
+        float currentShowMoney = 0;
+        float moneyAddGap = money / 150;
+        while (currentShowMoney < money)
+        {
+            currentShowMoney += moneyAddGap;
+            incomeText.text = currentShowMoney.ToString("F1");
+            yield return fixedUpdate;
+        }
+        incomeText.text = money.ToString("F1");
+    }
+
     // Use this for initialization
     void Start () {
         hpPivot = HP.Length - 1;
@@ -37,9 +59,10 @@ public class UIController : MonoBehaviour {
 	
     public void AddHP(int amount)
     {
-        if (hpPivot < HP.Length - 1)
+        int temp = hpPivot + amount;
+        if (hpPivot < HP.Length)
         {
-            for (int i = hpPivot; i < hpPivot + amount; i++)
+            for (int i = hpPivot; i < temp; i++)
             {
                 if (i < HP.Length)
                 {
@@ -60,9 +83,11 @@ public class UIController : MonoBehaviour {
 
     public void SubHP(int amount)
     {
-        if (hpPivot > 0)
+        Debug.Log(amount);
+        int temp = hpPivot - amount;
+        if (hpPivot >= 0)
         {
-            for (int i = hpPivot; i < hpPivot - amount; i--)
+            for (int i = hpPivot; i > temp; i--)
             {
                 if (i >= 0)
                 {

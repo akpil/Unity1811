@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour {
     {
         HP -= amount;
         UIController.instance.SubHP(amount);
+        if (!anim.GetBool(AnimationHashList.isDeadHash) && HP <= 0)
+        {
+            anim.SetBool(AnimationHashList.isDeadHash, true);
+            UIController.instance.ShowResultWindow(429496);
+            //
+        }
     }
 
     // Update is called once per frame

@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
         {
             anim.SetBool(AnimationHashList.isDeadHash, true);
             UIController.instance.ShowResultWindow(429496);
+            PlayerData.instance.SetValue3("game over");
             //
         }
     }

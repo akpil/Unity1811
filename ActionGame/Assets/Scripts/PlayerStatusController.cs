@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatusController : MonoBehaviour {
     [SerializeField]
@@ -11,9 +12,12 @@ public class PlayerStatusController : MonoBehaviour {
     [SerializeField]
     private UIelement[] elements;
 
+    private float discoutRate;
 
     private void Awake()
     {
+        discoutRate = 0;
+
         infos = new Stat[2];
         infos[0] = new Stat();
         infos[0].iconId = 0;
@@ -49,19 +53,71 @@ public class PlayerStatusController : MonoBehaviour {
                              infos[i].name,
                              infos[i].costCurrent.ToString("f1"),
                              string.Format(infos[i].contents, infos[i].valueCurrent.ToString("f1")),
-                             "구매");
+                             "구매",
+                             i,
+                             LevelUP);
         }
+    }
+
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void ChangeDelegate()
+    {
+        elements[1].ChangeCallBack((int a) => { Debug.Log(a + "  haha"); });
     }
 
     // Use this for initialization
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void AddDiscout(float value)
+    {
+        discoutRate += value;
+        for (int i = 0; i < infos.Length; i++)
+        {
+            CalcInfo(i);
+            elements[i].Renew(infos[i].costCurrent.ToString("f1"),
+                              string.Format(infos[i].contents, infos[i].valueCurrent.ToString("f1")),
+                              "구매"
+                              );
+        }
+    }
+
+    public void CalcInfo(int id)
+    {
+        infos[id].costCurrent = infos[id].costBase * Math.Pow(infos[id].costWeight, infos[id].currentLevel) * (1 - discoutRate);
+        infos[id].valueCurrent = infos[id].valueBase * Math.Pow(infos[id].valueWeight, infos[id].currentLevel);
+    }
+
+    public void LevelUP(int id)
+    {
+        if (infos[id].currentLevel < infos[id].maxLevel)
+        {
+            infos[id].currentLevel++;
+            CalcInfo(id);
+
+            PlayerData.instance.AddValue1(5.5f);
+
+            string purchaseStr = "";
+            if (infos[id].currentLevel < infos[id].maxLevel)
+            {
+                purchaseStr = "구매";
+            }
+            else
+            {
+                purchaseStr = "완료";
+            }
+
+            elements[id].Renew(infos[id].costCurrent.ToString("f1"),
+                              string.Format(infos[id].contents, infos[id].valueCurrent.ToString("f1")),
+                              purchaseStr
+                              );
+        }
+    }
 }
 [Serializable]
 public class Stat

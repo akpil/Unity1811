@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     public static GameController instance;
@@ -37,9 +38,18 @@ public class GameController : MonoBehaviour {
         UIController.instance.ShowMoney(money);
     }
 
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+
     public void AddMoney(float amount)
     {
         money += amount;
+
+        PlayerData.instance.AddValue2(3.77f);
+
         UIController.instance.ShowMoney(money);
     }
 

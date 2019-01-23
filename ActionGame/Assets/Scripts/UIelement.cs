@@ -12,14 +12,30 @@ public class UIelement : MonoBehaviour {
     [SerializeField]
     private Button purchaseButton;
     private int id;
-    public void Init(Sprite inputIcon, string titleText, string costText, string contentsText, string purchaseText)
+
+    private Delegates.VoidCallBackWithInt callback;
+
+    public void Init(Sprite inputIcon,
+                    string titleText,
+                    string costText,
+                    string contentsText,
+                    string purchaseText,
+                    int inputID,
+                    Delegates.VoidCallBackWithInt inputCallback)
     {
         icon.sprite = inputIcon;
         title.text = titleText;
         cost.text = costText;
         contents.text = contentsText;
         purchase.text = purchaseText;
+        callback = inputCallback;
+        id = inputID;
+        purchaseButton.onClick.AddListener(() => { callback(id); });
+    }
 
+    public void ChangeCallBack(Delegates.VoidCallBackWithInt inputCallback)
+    {
+        callback = inputCallback;
     }
 
     public void Renew(string costText, string contentsText, string purchaseText)

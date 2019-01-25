@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour {
     [SerializeField]
-    private GameObject Dummy;
+    private EffectPool pool;
 	// Use this for initialization
 	void Start () {
 		
@@ -36,8 +36,8 @@ public class TouchManager : MonoBehaviour {
                 {
                     if (hit.collider.gameObject == gameObject)
                     {
-                        Debug.Log("Success");
-                        Debug.Log(hit.point);
+                        GameObject effect = pool.GetFromPool((int)eEffectType.touch);
+                        effect.transform.position = hit.point;
                         return true;
                     }
                 }
@@ -52,7 +52,7 @@ public class TouchManager : MonoBehaviour {
 
         if (Touch())
         {
-            // implement click function
+            GameController.instance.Touch();
         }
 
 #if UNITY_EDITOR
@@ -65,14 +65,10 @@ public class TouchManager : MonoBehaviour {
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    Debug.Log("Success");
-                    Debug.Log(hit.point);
+                    GameObject effect = pool.GetFromPool((int)eEffectType.touch);
+                    effect.transform.position = hit.point;
 
-                    GameObject dum = Instantiate(Dummy);
-                    dum.transform.position = hit.point;
                     GameController.instance.Touch();
-                    // 이펙트 배치
-                    // 터치기능 호출
                 }
             }
         }

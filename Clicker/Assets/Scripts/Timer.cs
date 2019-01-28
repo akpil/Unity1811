@@ -5,20 +5,20 @@ using UnityEngine;
 public class Timer : MonoBehaviour {
 
     [SerializeField]
-    private float time;
-    private WaitForSeconds Waiting;
+    protected float time;
+    protected WaitForSeconds Waiting;
 
-    private void Awake()
+    protected void Awake()
     {
         Waiting = new WaitForSeconds(time);
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         StartCoroutine(Timeout());
     }
 
-    private IEnumerator Timeout()
+    protected IEnumerator Timeout()
     {
         yield return Waiting;
         gameObject.SetActive(false);

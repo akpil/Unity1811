@@ -8,6 +8,8 @@ public class UIController : MonoBehaviour {
 
     [SerializeField]
     private Image GaugeBar;
+    [SerializeField]
+    private Text GaugeText;
 
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class UIController : MonoBehaviour {
     public void ShowGauge(float amount)
     {
         GaugeBar.fillAmount = amount;
+        GaugeText.text = amount.ToString("p0");
     }
 
 	// Update is called once per frame

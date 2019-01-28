@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gem : MonoBehaviour {
+    [SerializeField]
+    private EffectPool pool;
 
     [SerializeField]
     private Sprite[] Sprites;
@@ -23,8 +25,8 @@ public class Gem : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+        pool = GameObject.FindGameObjectWithTag("EffectPool").GetComponent<EffectPool>();
+    }
 
     public void HideGem()
     {
@@ -38,6 +40,10 @@ public class Gem : MonoBehaviour {
             if (Sprites.Length > currentProgressPivot)
             {
                 rand.sprite = Sprites[currentProgressPivot];
+                //GameObject effect = pool.GetFromPool((int)eEffectType.phaseShift);
+                //effect.transform.position = transform.position;
+                pool.GetFromPool((int)eEffectType.phaseShift).
+                    transform.position = transform.position;
             }
             currentProgressPivot++;
         }

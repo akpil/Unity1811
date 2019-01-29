@@ -5,6 +5,8 @@ using UnityEngine;
 public class IncomeEffectPool : MonoBehaviour {
     public static IncomeEffectPool instance;
     [SerializeField]
+    private Transform canvas;
+    [SerializeField]
     private IncomeEffect[] Prefabs;
 
     private List<IncomeEffect>[] Pool;
@@ -43,7 +45,7 @@ public class IncomeEffectPool : MonoBehaviour {
                 return Pool[index][i];
             }
         }
-        IncomeEffect temp = Instantiate(Prefabs[index]);
+        IncomeEffect temp = Instantiate(Prefabs[index], canvas);
         Pool[index].Add(temp);
         return temp;
     }

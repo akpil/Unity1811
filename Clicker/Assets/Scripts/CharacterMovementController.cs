@@ -9,7 +9,12 @@ public class CharacterMovementController : MonoBehaviour {
     [SerializeField]
     private Animator anim;
 
+    [SerializeField]
+    private float xMin, xMax;
+
     private Rigidbody2D rb;
+
+    private Coroutine incomeRoutine;
 
     private void Awake()
     {
@@ -19,20 +24,26 @@ public class CharacterMovementController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartCoroutine(movement());
-        StartCoroutine(income());
 	}
 
-    private IEnumerator income()
+    public void SetIncomePeriod(float period)
     {
-        int count = 0;
-        WaitForSeconds pointFive = new WaitForSeconds(.5f);
+        if (incomeRoutine != null)
+        {
+            StopCoroutine(incomeRoutine);
+        }
+        incomeRoutine = StartCoroutine(income(period));
+    }
+
+    private IEnumerator income(float period)
+    {
+        WaitForSeconds gap = new WaitForSeconds(period);
         while (true)
         {
-            count++;
-            yield return pointFive;
+            yield return gap;
             IncomeEffect income = IncomeEffectPool.instance.GetFromPool(0);
             income.transform.position = incomePos.position;
-            income.SetText(count.ToString());
+            //income.SetText(count.ToString());
         }
     }
 
@@ -62,6 +73,8 @@ public class CharacterMovementController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        rb.position = new Vector2(Mathf.Clamp(rb.position.x,
+                                              xMin, xMax),
+                                    rb.position.y);
 	}
 }

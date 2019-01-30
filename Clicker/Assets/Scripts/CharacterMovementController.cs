@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour {
+    [SerializeField]
+    private int id;
     private static readonly int moveHash = Animator.StringToHash("IsMove");
     [SerializeField]
     private Transform incomePos;
@@ -41,9 +43,10 @@ public class CharacterMovementController : MonoBehaviour {
         while (true)
         {
             yield return gap;
-            IncomeEffect income = IncomeEffectPool.instance.GetFromPool(0);
-            income.transform.position = incomePos.position;
-            //income.SetText(count.ToString());
+            IncomeEffect incomeEffect = IncomeEffectPool.instance.GetFromPool(0);
+            incomeEffect.transform.position = incomePos.position;
+            string income = CoworkersController.instance.GetIncome(id);
+            incomeEffect.SetText(income);
         }
     }
 

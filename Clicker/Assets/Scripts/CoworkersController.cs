@@ -6,6 +6,10 @@ public class CoworkersController : MonoBehaviour {
     public static CoworkersController instance;
     [SerializeField]
     private CoworkerInfo[] infos;
+    [SerializeField]
+    private CharacterMovementController[] coworkerPrefab;
+
+    private CharacterMovementController[] activeCoworkers;
 
     private void Awake()
     {
@@ -13,6 +17,8 @@ public class CoworkersController : MonoBehaviour {
         {
             instance = this;
 
+            coworkerPrefab = Resources.LoadAll<CharacterMovementController>("Prefab/Colleague");
+            activeCoworkers = new CharacterMovementController[coworkerPrefab.Length];
             infos = new CoworkerInfo[3];
             for (int i = 0; i < infos.Length; i++)
             {
@@ -51,17 +57,31 @@ public class CoworkersController : MonoBehaviour {
         }
     }
 
-    public void LevelUP(int id)
+    public string GetIncome(int id)
+    {
+        GameController.instance.AddMoney(infos[id].valueCurrent);
+        return infos[id].valueCurrent.ToString();
+    }
+
+    public void LevelUP(int id, Delegate.ElementRenewFunc callback = null)
     {
         if (infos[id].currentLevel < infos[id].maxLevel)
         {
             if (infos[id].currentLevel == 0)
             {
-                //활성화
+                activeCoworkers[id] = Instantiate(coworkerPrefab[id]);
             }
 
             infos[id].currentLevel++;
             CalcData(id);
+            if (callback != null)
+            {
+                callback(infos[id].currentLevel.ToString(),
+                        string.Format(infos[id].contents, 
+                                      infos[id].incomePeriod.ToString("f1"),
+                                      infos[id].valueCurrent.ToString()),
+                        infos[id].costCurrent.ToString());
+            }
         }
     }
 
@@ -72,6 +92,8 @@ public class CoworkersController : MonoBehaviour {
         infos[id].valueCurrent = infos[id].valueBase *
                         System.Math.Pow(infos[id].valueWeight, infos[id].currentLevel);
     }
+
+
 
 	// Use this for initialization
 	void Start () {

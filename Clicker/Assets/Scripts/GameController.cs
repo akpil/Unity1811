@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
     public static GameController instance;
+
+    private SaveData userdata;
+
     private double maxValue;
     private double currentValue;
     private double gap;
@@ -30,6 +33,9 @@ public class GameController : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
+        userdata = new SaveData();
+        userdata.money = 100;
+
         levelCount = 0;
         CalcMaxValue();
         currentValue = 0;
@@ -60,8 +66,22 @@ public class GameController : MonoBehaviour {
         currentGem.SetProgress(progress);
     }
 
+    public void AddMoney(double value)
+    {
+        userdata.money += value;
+
+        //UI작업
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
+}
+
+
+public class SaveData
+{
+    public double money;
+    public int touchLevel;
 }

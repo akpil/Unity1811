@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class Element : MonoBehaviour {
     [SerializeField]
-    private Text name, level, contetns, costAndPurchase;
+    private Text name, level, contetns, costAndPurchase, costAndPurchase10;
     [SerializeField]
-    private Button purchaseButton;
+    private Button purchaseButton, purchaseButton10;
+    [SerializeField]
+    private int id;
+    
 
     public void Init(string inputName, string inputLevel, string inputContents, string cost)
     {
@@ -15,6 +18,7 @@ public class Element : MonoBehaviour {
         level.text = inputLevel;
         contetns.text = inputContents;
         costAndPurchase.text = cost;
+        purchaseButton.onClick.AddListener(() => { CoworkersController.instance.LevelUP(id, Renew); });
     }
 
     public void Renew(string inputLevel, string inputContents, string cost)

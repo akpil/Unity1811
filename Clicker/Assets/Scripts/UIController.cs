@@ -11,6 +11,10 @@ public class UIController : MonoBehaviour {
     [SerializeField]
     private Text GaugeText;
 
+    [SerializeField]
+    private Animator[] SlideWindowAnim;
+    public static readonly int windowOpenHash = Animator.StringToHash("IsON");
+
     private void Awake()
     {
         if (instance == null)
@@ -23,9 +27,19 @@ public class UIController : MonoBehaviour {
         }
     }
 
+    public void OpenWindow(int id)
+    {
+        SlideWindowAnim[id].SetBool(windowOpenHash, true);
+    }
+
+    public void CloseWindow(int id)
+    {
+        SlideWindowAnim[id].SetBool(windowOpenHash, false);
+    }
+
     // Use this for initialization
     void Start () {
-		
+        
 	}
 
     public void ShowGauge(float amount)

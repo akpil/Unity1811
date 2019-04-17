@@ -1,0 +1,59 @@
+[
+  {
+
+    "id": 0,
+    "name": "동료12331",
+    "contents": "업그레이드시 매 {0}초 마다 {1}의 수입을 올려줍니다.",
+    "currentLevel": 0,
+    "maxLevel": 5000,
+    "costBase": 100.0,
+    "costWeight": 1.08,
+    "costCurrent": 100.0,
+    "valueBase": 1.0,
+    "valueWeight": 1.04,
+    "valueCurrent": 1.0,
+    "incomePeriod": 1.5
+  },
+  {
+    "id": 1,
+    "name": "동료2",
+    "contents": "업그레이드시 매 {0}초 마다 {1}의 수입을 올려줍니다.",
+    "currentLevel": 0,
+    "maxLevel": 5000,
+    "costBase": 400.0,
+    "costWeight": 1.08,
+    "costCurrent": 400.0,
+    "valueBase": 4.0,
+    "valueWeight": 1.04,
+    "valueCurrent": 4.0,
+    "incomePeriod": 1.5
+  },
+  {
+    "id": 2,
+    "name": "동료3",
+    "contents": "업그레이드시 매 {0}초 마다 {1}의 수입을 올려줍니다.",
+    "currentLevel": 0,
+    "maxLevel": 5000,
+    "costBase": 800.0,
+    "costWeight": 1.08,
+    "costCurrent": 800.0,
+    "valueBase": 8.0,
+    "valueWeight": 1.04,
+    "valueCurrent": 8.0,
+    "incomePeriod": 1.5
+  },
+  {
+    "id": 3,
+    "name": "동료4",
+    "contents": "업그레이드시 매 {0}초 마다 {1}의 수입을 올려줍니다.",
+    "currentLevel": 0,
+    "maxLevel": 5000,
+    "costBase": 900.0,
+    "costWeight": 1.08,
+    "costCurrent": 800.0,
+    "valueBase": 8.0,
+    "valueWeight": 1.06,
+    "valueCurrent": 9.0,
+    "incomePeriod": 1.5
+  }
+]

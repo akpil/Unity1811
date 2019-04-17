@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
     public static GameController instance;
 
+    [SerializeField]
     private SaveData userdata;
 
     private double maxValue;
@@ -73,13 +74,13 @@ public class GameController : MonoBehaviour {
         //UI작업
     }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public SaveData GetSaveData()
+    {
+        return userdata;
+    }
 }
 
-
+[System.Serializable]
 public class SaveData
 {
     public double money;
